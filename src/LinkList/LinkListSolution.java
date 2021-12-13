@@ -201,7 +201,7 @@ public class LinkListSolution {
 
             if (fast.next != null) {
                 fast = fast.next.next;
-            } else  {
+            } else {
                 return null;
             }
             if (fast == slow) {
@@ -215,21 +215,105 @@ public class LinkListSolution {
         }
         return null;
     }
+//  合并俩个有序链表
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+        while (list1 != null && list2 != null) {
+            if (list1.val <= list2.val) {
+                current.next = list1;
+                list1 = list1.next;
+            } else  {
+                current.next = list2;
+                list2 = list2.next;
+            }
+            current = current.next;
+        }
+
+        current.next = list1 == null ? list2 : list1;
+        return dummy.next;
+    }
+
+    public ListNode mergeKLists(ListNode[] lists) {
+//        ListNode ans = null;
+//        for (int i = 0; i < lists.length; i++) {
+//            ans = mergeTwoLists(ans, lists[i]);
+//        }
+//        return ans;
+        return merge(lists, 0, lists.length - 1);
+    }
+
+    public ListNode merge(ListNode[] lists, int l, int r) {
+        if (l == r) return lists[l];
+
+        if (l > r) return null;
+
+        int mid = l + ((r - l) >> 1);
+        return mergeTwoLists(merge(lists, l, mid), merge(lists, mid + 1, r));
+    }
+//  给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）
+    public ListNode swapPairs(ListNode head) {
+//        if (head == null || head.next == null) {
+//            return head;
+//        }
+//        ListNode next = head.next;
+//        head.next = swapPairs(next.next);
+//        next.next = head;
+//        return next;
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode temp = dummy;
+        while (temp.next != null && temp.next.next != null) {
+            ListNode node1 = temp.next;
+            ListNode node2 = temp.next.next;
+            temp.next = node2;
+            node1.next = node2.next;
+            node2.next = node1;
+            temp = node1;
+        }
+        return dummy.next;
+    }
+/**
+ * 给你一个链表，每 k 个节点一组进行翻转，请你返回翻转后的链表。
+ *
+ * k 是一个正整数，它的值小于或等于链表的长度。
+ *
+ * 如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
+ *
+ * 进阶：
+ *
+ * 你可以设计一个只使用常数额外空间的算法来解决此问题吗？
+ * 你不能只是单纯的改变节点内部的值，而是需要实际进行节点交换。
+ *
+ * 来源：力扣（LeetCode）
+ * 链接：https://leetcode-cn.com/problems/reverse-nodes-in-k-group
+ * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+ * */
+
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode pre = dummy;
+        ListNode end = dummy;
+
+        while (end.next != null) {
+            for (int i = 0; i < k && end != null; i++) {
+                end = end.next;
+            }
+            if (end == null) break;
+
+            ListNode start = pre.next;
+            ListNode next = end.next;
+            end.next = null;
+            pre.next = reverseList(start);
+            start.next = next;
+            pre = start;
+            end = pre;
+        }
+        return dummy.next;
+    }
     public static void main(String args[]) {
-        ListNode head = new ListNode(1);
-        ListNode node2 = new ListNode(2);
-        head.next = node2;
-//        ListNode node3 = new ListNode(3);
-//        node2.next = node3;
-        ListNode node4 = new ListNode(2);
-        node2.next = node4;
-        ListNode node5 = new ListNode(1);
-        node4.next = node5;
-        LinkListSolution solution = new LinkListSolution();
-        System.out.println(solution.isPalindrome1(head));
-        solution.printNode(head);
-
-
     }
 }
 
