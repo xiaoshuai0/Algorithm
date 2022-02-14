@@ -313,6 +313,90 @@ public class LinkListSolution {
         }
         return dummy.next;
     }
+
+    public ListNode rotateRight(ListNode head, int k) {
+        if (k == 0 || head == null || head.next == null) {
+            return head;
+        }
+        int n = 1;
+        ListNode tail = head;
+        while (tail.next != null) {
+            tail = tail.next;
+            n++;
+        }
+        // 当向右移动的次数 k ≥n 时，我们仅需要向右移动 k % n次即可
+        int add = n - k % n;
+        if (add == n) {
+            return head;
+        }
+        // 可以先将给定的链表连接成环，然后将指定位置断开
+        tail.next = head;
+        while (add-- > 0) {
+            tail = tail.next;
+        }
+        ListNode res = tail.next;
+        tail.next = null;
+        return res;
+    }
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode cur = head;
+        while (cur.next != null) {
+            /// 当前节点和下个节点相同时，删除下个节点
+            if (cur.val == cur.next.val) {
+                cur.next = cur.next.next;
+            } else  {
+                cur = cur.next;
+            }
+        }
+        return head;
+    }
+
+    public ListNode deleteDuplicates2(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode cur = dummy;
+        ListNode pre = null;
+        while (cur != null) {
+            pre = cur;
+            cur = cur.next;
+            while (cur != null && cur.next != null && cur.val == cur.next.val) {
+                int temp = cur.val;
+                while (cur != null && cur.val == temp) {
+                    cur = cur.next;
+                }
+                pre.next = cur;
+            }
+        }
+        return dummy.next;
+    }
+    public ListNode partition(ListNode head, int x) {
+        if (head == null || head.next == null) return head;
+
+        ListNode before = new ListNode(0);
+        ListNode before_head = before;
+        ListNode after = new ListNode(0);
+        ListNode after_head = after;
+        while (head != null) {
+            if (head.val < x) {
+                before.next = head;
+                before = before.next;
+            } else  {
+                after.next = head;
+                after = after.next;
+            }
+            head = head.next;
+        }
+        after.next = null;
+        before.next = after_head.next;
+        return before_head.next;
+    }
     public static void main(String args[]) {
     }
 }
