@@ -173,22 +173,22 @@ public class LinkListSolution {
         }
         return dummy.next;
     }
-    public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
-        ListNode pre = dummy;
-        ListNode fast = dummy;
-        for (int i = 0; i < n; i++) {
-            fast = fast.next;
-        }
-
-        while (fast != null && fast.next != null) {
-            fast = fast.next;
-            pre = pre.next;
-        }
-        pre.next = pre.next.next;
-        return dummy.next;
-    }
+//    public ListNode removeNthFromEnd(ListNode head, int n) {
+//        ListNode dummy = new ListNode(0);
+//        dummy.next = head;
+//        ListNode pre = dummy;
+//        ListNode fast = dummy;
+//        for (int i = 0; i < n; i++) {
+//            fast = fast.next;
+//        }
+//
+//        while (fast != null && fast.next != null) {
+//            fast = fast.next;
+//            pre = pre.next;
+//        }
+//        pre.next = pre.next.next;
+//        return dummy.next;
+//    }
 
     public ListNode detectCycle(ListNode head) {
         if (head == null || head.next == null) {
@@ -397,6 +397,24 @@ public class LinkListSolution {
         before.next = after_head.next;
         return before_head.next;
     }
+
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode fast = dummy, slow = dummy;
+        for (int i = 0; i < n; i++) {
+            fast = fast.next;
+        }
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        slow.next = slow.next.next;
+        return dummy.next;
+    }
+
+
     public static void main(String args[]) {
     }
 }
