@@ -1,6 +1,7 @@
 import org.jetbrains.annotations.NotNull;
 import LinkList.ListNode;
-import java.util.HashMap;
+
+import java.util.*;
 
 public class Solution {
     /*
@@ -103,6 +104,27 @@ public class Solution {
             }
         }
     }
+    public boolean isValid(String s) {
+        Deque<Character> queue = new LinkedList<Character>();
+        Map<Character, Character> pairs = new HashMap<Character, Character>() {{
+            put(')', '(');
+            put(']', '[');
+            put('}', '{');
+        }};
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (pairs.containsKey(ch)) {
+                if (queue.isEmpty() || queue.peek() != pairs.get(ch)) {
+                    return false;
+                }
+                queue.pop();
+            } else {
+                queue.push(ch);
+            }
+        }
+        return queue.isEmpty();
+    }
+
     public static void main(String args[]) {
         Solution s = new Solution();
         String str = "abcabcbb";

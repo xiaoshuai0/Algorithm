@@ -216,23 +216,23 @@ public class LinkListSolution {
         return null;
     }
 //  合并俩个有序链表
-    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-        ListNode dummy = new ListNode(0);
-        ListNode current = dummy;
-        while (list1 != null && list2 != null) {
-            if (list1.val <= list2.val) {
-                current.next = list1;
-                list1 = list1.next;
-            } else  {
-                current.next = list2;
-                list2 = list2.next;
-            }
-            current = current.next;
-        }
-
-        current.next = list1 == null ? list2 : list1;
-        return dummy.next;
-    }
+//    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+//        ListNode dummy = new ListNode(0);
+//        ListNode current = dummy;
+//        while (list1 != null && list2 != null) {
+//            if (list1.val <= list2.val) {
+//                current.next = list1;
+//                list1 = list1.next;
+//            } else  {
+//                current.next = list2;
+//                list2 = list2.next;
+//            }
+//            current = current.next;
+//        }
+//
+//        current.next = list1 == null ? list2 : list1;
+//        return dummy.next;
+//    }
 
     public ListNode mergeKLists(ListNode[] lists) {
 //        ListNode ans = null;
@@ -414,6 +414,29 @@ public class LinkListSolution {
         return dummy.next;
     }
 
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+        while (list1 != null && list2 != null) {
+            if (list1.val < list2.val) {
+                current.next = list1;
+                list1 = list1.next;
+            } else {
+                current.next = list2;
+                list2 = list2.next;
+            }
+            current = current.next;
+        }
+
+        if (list1 != null) {
+            current.next = list1;
+        }
+
+        if (list2 != null) {
+            current.next = list2;
+        }
+        return dummy.next;
+    }
 
     public static void main(String args[]) {
     }
