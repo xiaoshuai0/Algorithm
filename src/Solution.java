@@ -124,12 +124,113 @@ public class Solution {
         }
         return queue.isEmpty();
     }
+    public List<String> generateParenthesis(int n) {
+        List<String> combinations = new ArrayList<String>();
+//        generateAll(new char[2 * n], 0, combinations);
+//        dfs(combinations, "", 0, 0, n);
+        backtrack(combinations, new StringBuffer(), 0, 0, n);
+        return combinations;
 
+    }
+    public void backtrack(List<String> ans, StringBuffer cur, int left, int right, int max) {
+        if (cur.length() == max * 2) {
+            ans.add(cur.toString());
+            return;
+        }
+        if (left < max) {
+            cur.append('(');
+            backtrack(ans, cur, left + 1, right, max);
+            cur.deleteCharAt(cur.length() - 1);
+        }
+
+        if (right < left) {
+            cur.append(')');
+            backtrack(ans, cur, left, right + 1, max);
+            cur.deleteCharAt(cur.length() - 1);
+        }
+    }
+    public void dfs(List<String> ans, String cur, int left, int right, int max) {
+        if (left == max && right == max) {
+            ans.add(cur.toString());
+            return;
+        }
+
+        if (left < right) {
+            return;
+        }
+
+        if (left < max) {
+            dfs(ans, cur + "(", left + 1, right, max);
+        }
+
+        if (right < max) {
+            dfs(ans, cur + ")", left, right + 1, max);
+        }
+    }
+    public void generateAll(char[] current, int pos, List<String> result) {
+        if (pos == current.length) {
+            if (vaild(current)) {
+                result.add(new String(current));
+            }
+        } else {
+            current[pos] = '(';
+            generateAll(current, pos + 1, result);
+            current[pos] = ')';
+            generateAll(current, pos + 1, result);
+        }
+    }
+
+    public boolean vaild(char[] current) {
+        int balance = 0;
+        for (char c: current) {
+            if (c == '(') {
+                ++balance;
+            } else {
+                --balance;
+            }
+            if (balance < 0) {
+                return false;
+            }
+        }
+        return balance == 0;
+    }
+
+    public List<String> letterCombinations(String digits) {
+        List<String> combinations = new ArrayList<String>();
+        if (digits.length() == 0) {
+            return combinations;
+        }
+        Map<Character, String> phoneMap = new HashMap<Character, String>() {{
+            put('2', "abc");
+            put('3', "def");
+            put('4', "ghi");
+            put('5', "jkl");
+            put('6', "mno");
+            put('7', "pqrs");
+            put('8', "tuv");
+            put('9', "wxyz");
+        }};
+
+        backtrack(combinations, phoneMap, digits, 0, new StringBuffer());
+        return combinations;
+    }
+    public void backtrack(List<String> combinations, Map<Character, String> phoneMap, String digits, int index, StringBuffer combination) {
+        if (digits.length() == index) {
+            combinations.add(combination.toString());
+            return;
+        }
+        char chr = digits.charAt(index);
+        String s = phoneMap.get(chr);
+        int lettersCount = s.length();
+        for (int i = 0; i < lettersCount; i++) {
+            combination.append(s.charAt(i));
+            backtrack(combinations, phoneMap, digits, index + 1, combination);
+            combination.deleteCharAt(combination.length() - 1);
+        }
+    }
     public static void main(String args[]) {
         Solution s = new Solution();
-        String str = "abcabcbb";
-        System.out.println(s.lengthOfLongestSubstring(str));
-        int[] nums = {2,7,11,15};
-        System.out.println(s.twoSum(nums, 9));
+        System.out.println(s.generateParenthesis(3));
+        System.out.println(s.letterCombinations("23"));
     }
 }
