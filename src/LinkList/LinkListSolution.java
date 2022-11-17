@@ -83,4 +83,52 @@ public class LinkListSolution {
         pre.next = pre.next.next;
         return dummy.next;
     }
+
+    public ListNode middleNode(ListNode head) {
+        ListNode slow = head, fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    public boolean hasCycle(ListNode head) {
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) return true;
+        }
+        return false;
+    }
+
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) break;
+        }
+        // 没有环
+        if (fast == null || fast.next == null) return null;
+        slow = head;
+        // 慢指针走 k 步， 快指针走 2k，
+        while (slow != fast) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode p1 = headA, p2 = headB;
+        while (p1 != p2) {
+            // p1 走一步，如果走到 A 链表末尾，转到 B 链表
+            p1 = p1 == null ? headB : p1.next;
+            // p2 走一步，如果走到 B 链表末尾，转到 A 链表
+            p2 = p2 == null ? headA : p2.next;
+        }
+        return p1;
+    }
 }
