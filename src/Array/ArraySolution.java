@@ -2,6 +2,8 @@ package Array;
 
 import LinkList.ListNode;
 
+import java.util.HashMap;
+
 public class ArraySolution {
 
     public int removeDuplicates(int[] nums) {
@@ -40,5 +42,86 @@ public class ArraySolution {
             }
         }
         return index;
+    }
+
+    int binarySearch(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        while (left <= right) {
+            // int mid = (left + right) / 2;
+            // (left + right) 可能会存在越界的情况
+            int mid = left + ((right - left) >> 1);
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else  {
+                right = mid - 1;
+            }
+        }
+        return -1;
+    }
+
+    int[] twoSum(int[] nums, int target) {
+        int letf = 0, right = nums.length - 1;
+        while (letf < right) {
+            int sum = nums[letf] + nums[right];
+            if (sum == target) {
+                 return new int[]{letf + 1, right + 1};
+            } else if (sum < target) {
+                 letf += 1;
+            } else {
+                right -= 1;
+            }
+        }
+        return new int[]{-1, -1};
+    }
+
+    public void reverseString(char[] s) {
+        int left = 0, right = s.length - 1;
+        while (left < right) {
+            char temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
+            left ++;
+            right --;
+        }
+    }
+    boolean isPalindrome(String s) {
+        int left = 0, right = s.length() - 1;
+        while (left < right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
+    }
+    public String longestPalindrome(String s) {
+        String res = "";
+        for (int i = 0; i < s.length(); i++) {
+            /// 以s[i]为中心的最长回文子串
+            String str1 = palindrome(s, i, i);
+            /// 以s[i]和s[i+1]为中心的最长回文子串
+            String str2 = palindrome(s, i, i + 1);
+            res = res.length() < str1.length() ? str1 : res;
+            res = res.length() < str2.length() ? str2 : res;
+        }
+        return res;
+    }
+
+    public String palindrome(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            // 双指针左右展开
+            --left;
+            ++right;
+        }
+        return s.substring(left + 1, right);
+    }
+
+    public static void main(String[] args) {
+        ArraySolution s = new ArraySolution();
+//        System.out.println(s.longestPalindrome("babad"));
+        System.out.println(s.longestPalindrome("cbbd"));
     }
 }
