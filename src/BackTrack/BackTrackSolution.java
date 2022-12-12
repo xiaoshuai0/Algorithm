@@ -151,6 +151,37 @@ public class BackTrackSolution {
             combinationSum_track.removeLast();
         }
     }
+
+    List<List<Integer>> permuteUnique_res = new LinkedList<>();
+    LinkedList<Integer> permuteUnique_track = new LinkedList<>();
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        // 先排序，让相同的元素靠在一起
+        Arrays.sort(nums);
+        boolean[] used = new boolean[nums.length];
+        permuteUnique_backTrack(nums, used);
+        return permuteUnique_res;
+    }
+
+    public void permuteUnique_backTrack(int[] candidates, boolean[] used) {
+        if (candidates.length == permuteUnique_track.size()) {
+            permuteUnique_res.add(new LinkedList<>(permuteUnique_track));
+            return;
+        }
+        for (int i = 0; i < candidates.length; i++) {
+            if (used[i]) {
+                continue;
+            }
+            // 新添加的剪枝逻辑，固定相同的元素在排列中的相对位置
+            if (i > 0 && candidates[i] == candidates[i - 1] && !used[i - 1])
+                continue;
+            used[i] = true;
+            permuteUnique_track.add(candidates[i]);
+            permuteUnique_backTrack(candidates, used);
+            used[i] = false;
+            permuteUnique_track.removeLast();
+        }
+    }
+
     public static void main(String[] args) {
 //        BackTrackSolution s = new BackTrackSolution();
 //        System.out.println(s.subsets(new int[] {1, 2, 3}));
