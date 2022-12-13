@@ -5,6 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BackTrackSolution {
+    public int name;
+    BackTrackSolution(int name) {
+        this.name = name;
+    }
 //    List<List<Integer>> res = new LinkedList<>();
 //    public List<List<Integer>> permute(int[] nums) {
 //        LinkedList<Integer> track = new LinkedList<>();
@@ -182,8 +186,24 @@ public class BackTrackSolution {
         }
     }
 
+    public void changeValue(int[] nums) {
+        System.out.println(nums);
+        nums[1] = 666;
+        for (int i = 0; i < nums.length; i++) {
+            System.out.println(nums[i]);
+        }
+        System.out.println(nums);
+        this.name = 55;
+    }
     public static void main(String[] args) {
-//        BackTrackSolution s = new BackTrackSolution();
+        BackTrackSolution s = new BackTrackSolution(2);
 //        System.out.println(s.subsets(new int[] {1, 2, 3}));
+        int[] nums = new int[]{1, 2, 3};
+        System.out.println(nums);
+        s.changeValue(nums);
+        for (int i = 0; i < nums.length; i++) {
+            System.out.println(nums[i]);
+        }
+        System.out.println(s.name);
     }
 }
