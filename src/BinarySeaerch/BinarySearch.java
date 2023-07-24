@@ -11,6 +11,7 @@ public class BinarySearch {
 
 
     int binarySearch(int[] nums, int target) {
+        // 一左一右两个指针相向而行
         int left = 0, right = nums.length - 1;
         while (left <= right) {
             int mid = left + ((right - left) >> 1);

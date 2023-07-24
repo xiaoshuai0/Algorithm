@@ -23,30 +23,50 @@ public class LinkListSolution {
         return dummy.next;
     }
 
+//    public ListNode partition(ListNode head, int x) {
+//        /// 存放小于x的队列
+//        ListNode dummy_s = new ListNode(0);
+//        ListNode s = dummy_s;
+//        /// 存放大于x的队列
+//        ListNode dummy_b = new ListNode(0);
+//        ListNode b = dummy_b;
+//        while (head != null) {
+//            if (head.val < x) {
+//                s.next = head;
+//                s = s.next;
+//            } else  {
+//                b.next = head;
+//                b = b.next;
+//            }
+//            // 断开原链表中的每个节点的 next 指针
+//            ListNode temp = head.next;
+//            head.next = null;
+//            head = temp;
+//        }
+//        s.next = dummy_b.next;
+//        return dummy_s.next;
+//    }
+
     public ListNode partition(ListNode head, int x) {
-        /// 存放小于x的队列
-        ListNode dummy_s = new ListNode(0);
+        ListNode dummy_s = new ListNode(-1);
         ListNode s = dummy_s;
-        /// 存放大于x的队列
-        ListNode dummy_b = new ListNode(0);
+        ListNode dummy_b = new ListNode(-1);
         ListNode b = dummy_b;
         while (head != null) {
             if (head.val < x) {
                 s.next = head;
                 s = s.next;
-            } else  {
+            } else {
                 b.next = head;
                 b = b.next;
             }
-            // 断开原链表中的每个节点的 next 指针
             ListNode temp = head.next;
             head.next = null;
             head = temp;
         }
         s.next = dummy_b.next;
-        return dummy_s.next;
+        return dummy_s;
     }
-
     public ListNode mergeKLists(ListNode[] lists) {
         return _merge(lists, 0, lists.length - 1);
     }
