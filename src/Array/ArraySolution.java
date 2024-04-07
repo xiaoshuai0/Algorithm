@@ -2,24 +2,9 @@ package Array;
 
 import LinkList.ListNode;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class ArraySolution {
-
-    public int removeDuplicates(int[] nums) {
-        if (nums.length <= 1) return nums.length;
-        int slow = 0, fast = 1;
-        while (fast < nums.length) {
-            if (nums[slow] != nums[fast]) {
-                slow ++;
-                // 维护 nums[0..slow] 无重复
-                nums[slow] = nums[fast];
-            }
-            fast ++;
-        }
-        return slow + 1;
-    }
-
     public ListNode deleteDuplicates(ListNode head) {
         ListNode dummy = new ListNode(-1);
         dummy.next = head;
@@ -119,9 +104,69 @@ public class ArraySolution {
         return s.substring(left + 1, right);
     }
 
+    public int removeDuplicates(int[] nums) {
+       if (nums.length < 2) {
+           return nums.length;
+       }
+       int slow = 0, fast = 1;
+       while (fast < nums.length) {
+           if (nums[fast] != nums[slow]) {
+               slow ++;
+               nums[slow] = nums[fast];
+           }
+           fast ++;
+       }
+       return slow + 1;
+    }
+    public void moveZeroes(int[] nums) {
+        int slow = 0, fast = 0;
+        while (fast < nums.length) {
+            if (nums[fast] != 0) {
+                int temp = nums[slow];
+                nums[slow] = nums[fast];
+                nums[fast] = temp;
+                slow++;
+            }
+            fast++;
+        }
+    }
+
+    public int[][] merge(int[][] intervals) {
+        if (intervals.length < 2) {
+            return intervals;
+        }
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            public int compare(int[] interval1, int[] interval2) {
+                return interval1[0] - interval2[0];
+            }
+        });
+
+
+        List<int[]> res = new ArrayList<>();
+        for (int i = 0; i < intervals.length; i++) {
+            int L = intervals[i][0], R = intervals[i][1];
+            if (res.size() == 0 || res.get(res.size() - 1)[1] < L) {
+                res.add(new int[]{L, R});
+            } else {
+                res.get(res.size() - 1)[1] = Math.max(res.get(res.size() - 1)[1], R);
+            }
+        }
+        return res.toArray(new int[res.size()][]);
+    }
+
+    public void rotate(int[] nums, int k) {
+        int n = nums.length;
+        int[] newNums = new int[n];
+        for (int i = 0; i < n; i++) {
+            newNums[(i + k) % n] = nums[i];
+        }
+        System.arraycopy(newNums, 0, nums, 0, n);
+    }
+
     public static void main(String[] args) {
         ArraySolution s = new ArraySolution();
 //        System.out.println(s.longestPalindrome("babad"));
         System.out.println(s.longestPalindrome("cbbd"));
+        System.out.println(s.removeDuplicates(new int[]{0,0,1,1,1,2,2,3,3,4}));
     }
 }
